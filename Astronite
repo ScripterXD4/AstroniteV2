@@ -1,0 +1,704 @@
+local Services = {
+    ["TweenService"] = game:GetService("TweenService"),
+    ["CoreService"] = game:GetService("CoreGui"),
+    ["RunService"] = game:GetService("RunService"),
+    ["HttpService"] = game:GetService("HttpService")
+  }
+  
+local LocalPlayer = game.Players.LocalPlayer
+local CmbtConst = require(game:GetService("ReplicatedStorage").TS.combat["combat-constant"]).CombatConstant
+
+  
+  function SetCorner(Size, Parent)
+      local Corner = Instance.new("UICorner")
+      Corner.CornerRadius = UDim.new(0, Size)
+      Corner.Parent = Parent
+  end
+  
+  function RunAstro(Y)
+    Y()
+  end
+  
+  
+  local DefaultSettings = {
+    Killaura = true
+  }
+  
+  local AstroniteRewriteGui = Instance.new("ScreenGui")
+  AstroniteRewriteGui.Name = "AstroniteRewriteGui"
+  AstroniteRewriteGui.Parent = Services["CoreService"]
+  AstroniteRewriteGui.Enabled = true
+  AstroniteRewriteGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+  
+function SendNotification(Time, Name, Value)
+  for _, v in next, AstroniteRewriteGui:GetDescendants() do
+  if v.Name == "NotificationBackground" then
+    v.Position = v.Position + UDim2.new(0,0,0.3, 0)
+    end
+end
+
+    local NotificationBackground = Instance.new("Frame")
+    NotificationBackground.Name = "NotificationBackground"
+    NotificationBackground.Parent = AstroniteRewriteGui
+    NotificationBackground.BackgroundColor3 = Color3.new(0.12549, 0.12549, 0.12549)
+    NotificationBackground.BorderColor3 = Color3.new(0, 0, 0)
+    NotificationBackground.BorderSizePixel = 1
+    NotificationBackground.Visible = false
+    NotificationBackground.BackgroundTransparency = 1
+    NotificationBackground.Position = UDim2.new(0.773054302, 0, 0.758310258, 0)
+    NotificationBackground.Size = UDim2.new(0.215827346, 0, 0.166204989, 0)
+
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 3)
+    UICorner.Parent = NotificationBackground
+
+    local Title = Instance.new("TextLabel")
+    Title.Parent = NotificationBackground
+    Title.BackgroundColor3 = Color3.new(1, 1, 1)
+    Title.BackgroundTransparency = 1
+    Title.BorderColor3 = Color3.new(0, 0, 0)
+    Title.BorderSizePixel = 0
+    Title.Position = UDim2.new(0.0727272704, 0, 0.122499846, 0)
+    Title.Size = UDim2.new(0.668181837, 0, 0.412499994, 0)
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = "Astronite V1"
+    Title.TextColor3 = Color3.new(1, 1, 1)
+    Title.TextSize = 14
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    local WarnIcon = Instance.new("ImageLabel")
+    WarnIcon.Parent = NotificationBackground
+    WarnIcon.Position = UDim2.new(0.836363614, 0, 0.112499997, 0)
+    WarnIcon.BackgroundColor3 = Color3.new(1, 1, 1)
+    WarnIcon.BackgroundTransparency = 1
+    WarnIcon.BorderColor3 = Color3.new(0, 0, 0)
+    WarnIcon.BorderSizePixel = 0
+    WarnIcon.Size = UDim2.new(0.118181817, 0, 0.25, 0)
+    WarnIcon.Image = "rbxassetid://6294110112"
+    WarnIcon.ScaleType = Enum.ScaleType.Fit
+
+    local Content = Instance.new("TextLabel")
+    Content.Parent = NotificationBackground
+    Content.BackgroundColor3 = Color3.new(1, 1, 1)
+    Content.BackgroundTransparency = 1
+    Content.Position = UDim2.new(0.0727272704, 0, 0.534999847, 0)
+    Content.BorderColor3 = Color3.new(0, 0, 0)
+    Content.BorderSizePixel = 0
+    Content.Size = UDim2.new(0.818181813, 0, 0.300000012, 0)
+    Content.Font = Enum.Font.GothamBold
+    Content.Text = Name
+    Content.TextColor3 = Color3.new(1, 1, 1)
+    Content.TextSize = 14
+    Content.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local ToggleValue = Instance.new("TextLabel")
+    ToggleValue.Parent = NotificationBackground
+    ToggleValue.BackgroundColor3 = Color3.new(1, 1, 1)
+    ToggleValue.BackgroundTransparency = 1
+    ToggleValue.Position = UDim2.new(0.527272704, 0, 0.534999847, 0)
+    ToggleValue.BorderColor3 = Color3.new(0, 0, 0)
+    ToggleValue.BorderSizePixel = 0
+    ToggleValue.Size = UDim2.new(0.818181813, 0, 0.300000012, 0)
+    ToggleValue.Font = Enum.Font.GothamBold
+    ToggleValue.Text = ""
+    ToggleValue.TextColor3 = Color3.new(1, 1, 1)
+    ToggleValue.TextSize = 14
+    ToggleValue.TextXAlignment = Enum.TextXAlignment.Left
+    
+    if Value then
+      ToggleValue.Text = "Enabled"
+      ToggleValue.TextColor3 = Color3.fromRGB(50, 205, 50)
+      else
+        ToggleValue.Text = "Disabled"
+        ToggleValue.TextColor3 = Color3.fromRGB(220, 20, 60)
+      end
+
+    local DropShadowHolder = Instance.new("Frame")
+    DropShadowHolder.Parent = NotificationBackground
+    DropShadowHolder.BackgroundTransparency = 1
+    DropShadowHolder.BorderSizePixel = 0
+    DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+    DropShadowHolder.ZIndex = 0
+
+    local DropShadow = Instance.new("ImageLabel")
+    DropShadow.Parent = DropShadowHolder
+    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropShadow.BackgroundTransparency = 1
+    DropShadow.BorderSizePixel = 0
+    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropShadow.Size = UDim2.new(1, 47, 1, 47)
+    DropShadow.ZIndex = 0
+    DropShadow.Image = "rbxassetid://6015897843"
+    DropShadow.ImageColor3 = Color3.new(0, 0, 0)
+    DropShadow.ImageTransparency = 0.5
+    DropShadow.ScaleType = Enum.ScaleType.Slice
+    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    
+    NotificationBackground.Visible = true
+    local animation = game:GetService("TweenService"):Create(NotificationBackground, TweenInfo.new(0.6), {BackgroundTransparency = 0})
+    animation:Play()
+  
+    task.wait(Time)
+
+    local animation2 = game:GetService("TweenService"):Create(NotificationBackground, TweenInfo.new(0.6), {BackgroundTransparency = 1})
+    animation2:Play()
+    
+   task.wait(0.61)
+
+    NotificationBackground:Destroy()
+end
+
+  function CreateMain(x)
+  local SelectionFrame = Instance.new("Frame")
+  local UICorner = Instance.new("UICorner")
+  local NameLabel = Instance.new("TextLabel")
+  local LineFrame = Instance.new("Frame")
+  local UICorner_2 = Instance.new("UICorner")
+  local TabsHolder = Instance.new("Frame")
+  local DropShadowHolder = Instance.new("Frame")
+  local DropShadow = Instance.new("ImageLabel")
+  local Setttings = Instance.new("ImageButton")
+  local SettingsHolder = Instance.new("Frame")
+  local FontChoser = Instance.new("TextButton")
+  local FontChoserText = Instance.new("TextLabel")
+  local SettingsText = Instance.new("TextLabel")
+  local CurrentFontHolder = Instance.new("Frame")
+  local CurrentFontText = Instance.new("TextLabel")
+  local UiListLayout = Instance.new("UIListLayout")
+  
+  local Folder = "Astronite"
+  local File = "Astronite/Settings.lua"
+  local FirstTime = "Astronite/FirstTime.lua"
+  makefolder(Folder)
+  
+  if not isfile(FirstTime) then
+    writefile(FirstTime, Services["HttpService"]:JSONEncode(true))
+  end
+  
+local check = Services["HttpService"]:JSONDecode(readfile(FirstTime))
+ 
+  if not isfile(File) and check then 
+    writefile(File, Services["HttpService"]:JSONEncode(DefaultSettings))
+  end
+
+if check then
+   writefile(FirstTime, Services["HttpService"]:JSONEncode(false))
+end
+
+  local Costumizable = {
+    FontType = Enum.Font.GothamBold,
+    TextColor = Color3.new(1,1,1)
+    }
+    
+  SelectionFrame.Name = "SelectionFrame"
+  SelectionFrame.Parent = AstroniteRewriteGui
+  SelectionFrame.BackgroundColor3 = Color3.new(0.0941176, 0.0941176, 0.0941176)
+  SelectionFrame.BorderColor3 = Color3.new(0, 0, 0)
+  SelectionFrame.BorderSizePixel = 0
+  SelectionFrame.Position = UDim2.new(0.00400000019, 0, 0.23999996, 0)
+  SelectionFrame.Size = UDim2.new(0.150000006, 0, 0.556999981, 0)
+  
+  SetCorner(3, SelectionFrame)
+  
+  NameLabel.Name = "NameLabel"
+  NameLabel.Parent = SelectionFrame
+  NameLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+  NameLabel.BackgroundTransparency = 1
+  NameLabel.BorderColor3 = Color3.new(0, 0, 0)
+  NameLabel.BorderSizePixel = 0
+  NameLabel.Size = UDim2.new(0.995999992, 0, 0.149000004, 0)
+  NameLabel.Font = Costumizable.FontType
+  NameLabel.Text = x.Tittle or "Astronite"
+  NameLabel.TextColor3 = Costumizable.TextColor
+  NameLabel.TextSize = 15
+  
+  DropShadowHolder.Name = "DropShadowHolder"
+  DropShadowHolder.Parent = SelectionFrame
+  DropShadowHolder.BackgroundTransparency = 1
+  DropShadowHolder.BorderSizePixel = 0
+  DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+  DropShadowHolder.ZIndex = 0
+  
+  Setttings.Size = UDim2.new(0.1, 0, 0.06, 0)
+  Setttings.Position = UDim2.new(0.86, 0, 0.92)
+  Setttings.BackgroundTransparency = 1
+  Setttings.ZIndex = 4
+  Setttings.Image = "rbxassetid://1203479768"
+  Setttings.Parent = SelectionFrame
+  
+  SettingsHolder.Size = UDim2.new(1, 0, 1)
+  SettingsHolder.Position = UDim2.new(0, 0, 0, 0)
+  SettingsHolder.BackgroundColor3 = Color3.new(0.06,0.06,0.06)
+  SettingsHolder.BackgroundTransparency = 1
+  SettingsHolder.ZIndex = 3
+  SettingsHolder.Visible = false
+  SettingsHolder.BorderSizePixel = 0
+  SettingsHolder.Parent = SelectionFrame
+  
+  SettingsText.Size = UDim2.new(0.1,0, 0.1)
+  SettingsText.Position = UDim2.new(0.14, 0, 0, 0)
+  SettingsText.Text = "Settings"
+  SettingsText.BackgroundTransparency = 1
+  SettingsText.TextColor3 = Costumizable.TextColor
+  SettingsText.Font = Costumizable.FontType
+  SettingsText.TextSize = 14
+  SettingsText.Parent = SettingsHolder
+  
+  FontChoser.Size = UDim2.new(0.96, 0, 0.12, 0)
+  FontChoser.Position = UDim2.new(0.02,0, 0.15)
+  FontChoser.BackgroundTransparency = 0
+  FontChoser.BorderSizePixel = 0
+  FontChoser.BackgroundColor3 = Color3.new(0.14, 0.14, 0.14)
+  FontChoser.Text = ""
+  FontChoser.Parent = SettingsHolder
+  
+  FontChoserText.Size = UDim2.new(0.1,0, 0.1)
+  FontChoserText.Position = UDim2.new(0.14, 0, 0.46, 0)
+  FontChoserText.Text = "FontType"
+  FontChoserText.BackgroundTransparency = 1
+  FontChoserText.TextColor3 = Costumizable.TextColor
+  FontChoserText.Font = Costumizable.FontType
+  FontChoserText.TextSize = 12
+  FontChoserText.Parent = FontChoser
+  
+  CurrentFontHolder.Name = "CurrentFontHolder"
+  CurrentFontHolder.Parent = FontChoser
+  CurrentFontHolder.BackgroundTransparency = 0
+  CurrentFontHolder.BorderSizePixel = 0
+  CurrentFontHolder.BackgroundColor3 = Color3.new(0,0,0)
+  CurrentFontHolder.Size = UDim2.new(0.45, 0, 0.46)
+  CurrentFontHolder.Position = UDim2.new(0.44, 0, 0.3)
+  CurrentFontHolder.ZIndex = 0
+  
+  CurrentFontText.Size = UDim2.new(0.1,0, 0.1)
+  CurrentFontText.Position = UDim2.new(0.45, 0, 0.46, 0)
+  CurrentFontText.Text = "GothamBold"
+  CurrentFontText.BackgroundTransparency = 1
+  CurrentFontText.TextColor3 = Costumizable.TextColor
+  CurrentFontText.Font = Enum.Font.Ubuntu
+  CurrentFontText.TextSize = 9
+  CurrentFontText.Parent = CurrentFontHolder
+  
+  SetCorner(2, CurrentFontHolder)
+  SetCorner(6, FontChoser)
+  SetCorner(3, SettingsHolder)
+  
+  local Enabled1 = false
+  Setttings.MouseButton1Click:Connect(function()
+      Enabled1 = not Enabled1
+      if Enabled1 then
+          local Animation3 = Services["TweenService"]:Create(Setttings, TweenInfo.new(0.7), {Position = UDim2.new(0.86, 0, 0.03)})
+          Animation3:Play()
+          SettingsHolder.Visible = true
+          local Animation4 = Services["TweenService"]:Create(SettingsHolder, TweenInfo.new(0.6), {BackgroundTransparency = 0})
+          Animation4:Play()
+          
+          Animation4.Completed:Connect(function()
+          local Animation10 = Services["TweenService"]:Create(FontChoser, TweenInfo.new(0.6), {BackgroundTransparency = 0})
+          Animation10:Play()
+          end)
+          else
+              local Animation5 = Services["TweenService"]:Create(Setttings, TweenInfo.new(0.7), {Position = UDim2.new(0.86, 0, 0.92)})
+          Animation5:Play()
+          local Animation6 = Services["TweenService"]:Create(SettingsHolder, TweenInfo.new(0.6), {BackgroundTransparency = 1})
+          Animation6:Play()
+          local Animation11 = Services["TweenService"]:Create(FontChoser, TweenInfo.new(0.6), {BackgroundTransparency = 1})
+          Animation11:Play()
+          wait(0.6)
+          SettingsHolder.Visible = false
+      end
+  end)
+  
+  
+  DropShadow.Name = "DropShadow"
+  DropShadow.Parent = DropShadowHolder
+  DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+  DropShadow.BackgroundTransparency = 1
+  DropShadow.BorderSizePixel = 0
+  DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+  DropShadow.Size = UDim2.new(1, 37, 1, 37)
+  DropShadow.ZIndex = 0
+  DropShadow.Image = "rbxassetid://6015897843"
+  DropShadow.ImageColor3 = Color3.new(0, 0, 0)
+  DropShadow.ImageTransparency = 0.5
+  DropShadow.ScaleType = Enum.ScaleType.Slice
+  DropShadow.SliceCenter = Rect.new(49, 49, 450, 450) 
+  
+  LineFrame.Name = "LineFrame"
+  LineFrame.Parent = SelectionFrame
+  LineFrame.BackgroundColor3 = Color3.new(0.27,0.27,0.27)
+  LineFrame.BorderColor3 = Color3.new(0, 0, 0)
+  LineFrame.BorderSizePixel = 0
+  LineFrame.Position = UDim2.new(0, 0, 0.129999976, 0)
+  LineFrame.Size = UDim2.new(1, 0, -0.00754698366, 0)
+  
+  SetCorner(2, LineFrame)
+  
+  TabsHolder.Size = UDim2.new(0.95, 0, 0.85)
+  TabsHolder.Position = UDim2.new(0.025, 0, 0.15, 0)
+  TabsHolder.BorderSizePixel = 0
+  TabsHolder.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
+  TabsHolder.Parent = SelectionFrame
+  
+  UiListLayout.Parent = TabsHolder
+  UiListLayout.Padding = UDim.new(0, 5)
+  
+  SetCorner(7, TabsHolder)
+  
+  
+  function CreateTab(y)
+  local TabButton = Instance.new("TextButton")
+  local TabText = Instance.new("TextLabel")
+  local TabIcon = Instance.new("ImageLabel")
+  local Tab = Instance.new("Frame")
+  local TabTittle = Instance.new("TextLabel")
+  local TabLine = Instance.new("Frame")
+  local ToggleHolder = Instance.new("ScrollingFrame")
+  local TabButton = Instance.new("TextButton")
+  local PlaceHolder = Instance.new("Frame")
+  local stroke = Instance.new("UIStroke")
+  local UiListLayout2 = Instance.new("UIListLayout")
+  local uiPadding = Instance.new("UIPadding")
+  
+  TabButton.Name = "TabButton"
+  TabButton.Parent = TabsHolder
+  TabButton.BackgroundColor3 = Color3.new(0.14, 0.14, 0.14)
+  TabButton.BorderColor3 = Color3.new(0, 0, 0)
+  TabButton.BorderSizePixel = 0
+  TabButton.Position = UDim2.new(0, 0, 0, 0)
+  TabButton.AutoButtonColor = false
+  TabButton.Size = UDim2.new(1, 0, 0.104, 0)
+  TabButton.Text = ""
+  
+  PlaceHolder.Size = UDim2.new(1,0,1)
+  PlaceHolder.Position = UDim2.new(0,0,0,0)
+  PlaceHolder.BackgroundTransparency = 1
+  PlaceHolder.Parent = TabButton
+  
+  TabText.Size = UDim2.new(0.1, 0, 0.1, 0)
+  TabText.Position = UDim2.new(0.2, 0, 0.5, 0)
+  TabText.BackgroundTransparency = 1
+  TabText.BorderSizePixel = 0
+  TabText.Text = y.TabName
+  TabText.Font = Costumizable.FontType
+  TabText.TextXAlignment = Enum.TextXAlignment.Left
+  TabText.TextColor3 = Costumizable.TextColor
+  TabText.TextSize = 14
+  TabText.Parent = TabButton
+  
+  stroke.Color = Color3.new(1,1,1)
+  stroke.Enabled = false
+  stroke.Thickness = 0.1
+  stroke.Parent = PlaceHolder
+  
+  TabIcon.Size = UDim2.new(0.12, 0, 0.8, 0)
+  TabIcon.Position = UDim2.new(0.02, 0, 0.1, 0)
+  TabIcon.BackgroundTransparency = 1
+  TabIcon.Image = y.Icon
+  TabIcon.Parent = TabButton
+  
+  Tab.Size = UDim2.new(0.1675, 0, 0.8, 0)
+  Tab.Position = UDim2.new(0.01, 0, 0.1, 0)
+  Tab.BackgroundColor3 = Color3.new(0.06, 0.06,0.06)
+  Tab.BorderSizePixel = 0
+  Tab.BackgroundTransparency = 1
+  Tab.Name = "Tabs"
+  Tab.Visible = false
+  Tab.Parent = AstroniteRewriteGui 
+  
+  TabTittle.Size = UDim2.new(0.1, 0, 0.1, 0)
+  TabTittle.Position = UDim2.new(0.4, 0, 0.00008, 0)
+  TabTittle.BackgroundTransparency = 1
+  TabTittle.BorderSizePixel = 0
+  TabTittle.Text = y.TabName
+  TabTittle.Font = Costumizable.FontType
+  TabTittle.TextColor3 = Costumizable.TextColor
+  TabTittle.TextSize = 17
+  TabTittle.Parent = Tab
+  
+  TabLine.Name = "TabLineFrame"
+  TabLine.Parent = Tab
+  TabLine.BackgroundColor3 = Color3.new(0.27,0.27,0.27)
+  TabLine.BorderColor3 = Color3.new(0, 0, 0)
+  TabLine.BorderSizePixel = 0
+  TabLine.BackgroundTransparency = 1
+  TabLine.Position = UDim2.new(0, 0, 0.078629, 0)
+  TabLine.Size = UDim2.new(1, 0, -0.006, 0)
+  
+  ToggleHolder.Size = UDim2.new(0.95, 0, 0.90)
+  ToggleHolder.Position = UDim2.new(0.025, 0, 0.09, 0)
+  ToggleHolder.BorderSizePixel = 0
+  ToggleHolder.BackgroundTransparency = 1
+  ToggleHolder.BackgroundColor3 = Tab.BackgroundColor3
+  ToggleHolder.Parent = Tab
+  
+  UiListLayout2.Parent = ToggleHolder
+  UiListLayout2.Padding = UDim.new(0, 10)
+  
+  uiPadding.Parent = ToggleHolder
+  uiPadding.PaddingLeft = UDim.new(0, 10)
+  
+  SetCorner(3, ToggleHolder)
+  SetCorner(3, Tab)
+  
+  for _, v in next, AstroniteRewriteGui:GetDescendants() do
+    if v.Name == "Tabs" then
+      v.Position = v.Position + UDim2.new(0.2, 0, 0, 0)
+      end
+  end
+  
+  
+  local Enabled = false
+  TabButton.MouseButton1Click:Connect(function()
+      Enabled = not Enabled
+      if Enabled then
+          local Animation = Services["TweenService"]:Create(TabButton, TweenInfo.new(0.5), {BackgroundColor3 = Color3.new(1,1,1)})
+          Animation:Play()
+          TabText.TextColor3 = Color3.new(0,0,0)
+          TabIcon.ImageColor3 = Color3.new(0,0,0)
+          Tab.Visible = true
+          for _, v in next, Tab:GetDescendants() do 
+            if not v:IsA("TextLabel") and not v:IsA("UIPadding") and not v:IsA("UICorner") and not v:IsA("UIListLayout") then
+              local Animation14 = Services["TweenService"]:Create(v, TweenInfo.new(0.23), {BackgroundTransparency = 0})
+              Animation14:Play()
+              end
+            end
+          local Animation12 = Services["TweenService"]:Create(Tab, TweenInfo.new(0.23), {BackgroundTransparency = 0})
+          Animation12:Play()
+          else
+              local Animation2 = Services["TweenService"]:Create(TabButton, TweenInfo.new(0.5), {BackgroundColor3 = Color3.new(0.14, 0.14, 0.14)})
+          Animation2:Play()
+          for _, v1 in next, Tab:GetDescendants() do
+            if not v1:IsA("TextLabel") and not v1:IsA("UIPadding") and not v1:IsA("UICorner") and not v1:IsA("UIListLayout") then
+              local Animation15 = Services["TweenService"]:Create(v1, TweenInfo.new(0.23), {BackgroundTransparency = 1})
+              Animation15:Play()
+              end
+            end
+          local Animation13 = Services["TweenService"]:Create(Tab, TweenInfo.new(0.23), {BackgroundTransparency = 1})
+          Animation13:Play()
+          TabText.TextColor3 = Color3.new(1,1,1)
+          TabIcon.ImageColor3 = Color3.new(1,1,1)
+          task.wait(0.23)
+          Tab.Visible = false
+      end
+  end)
+  SetCorner(3, TabButton)
+  SetCorner(3, PlaceHolder)
+  function CreateToggle(z)
+          local Toggle = Instance.new("TextButton")
+          local ToggleName = Instance.new("TextLabel")
+          
+          Toggle.Name = z.Name
+          Toggle.Parent = z.Parent
+          Toggle.BackgroundColor3 = Color3.new(0.14, 0.14, 0.14)
+          Toggle.BorderColor3 = Color3.new(0, 0, 0)
+          Toggle.BorderSizePixel = 0
+          Toggle.Position = UDim2.new(0, 0, 0, 0)
+          Toggle.Visible = true
+          Toggle.AutoButtonColor = false
+          Toggle.Size = UDim2.new(0.99, 0, 0.04, 0)
+          Toggle.Text = ""
+          
+          ToggleName.Size = UDim2.new(0.1, 0, 0.1, 0)
+          ToggleName.Position = UDim2.new(0.06, 0, 0.45, 0)
+          ToggleName.BackgroundTransparency = 1
+          ToggleName.BorderSizePixel = 0
+          ToggleName.Text = z.Name
+          ToggleName.Font = Costumizable.FontType
+          ToggleName.TextXAlignment = Enum.TextXAlignment.Left
+          ToggleName.TextColor3 = Costumizable.TextColor
+          ToggleName.TextSize = 16
+          ToggleName.Parent = Toggle
+          
+          function ChangeColor()
+              if z.Value then
+                  Services["TweenService"]:Create(Toggle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.new(1,1,1)}):Play()
+                  Services["TweenService"]:Create(ToggleName, TweenInfo.new(0.3), {TextColor3 = Color3.new(0,0,0)}):Play()
+                  SendNotification(0.5, z.Name.." is now:", true)
+              else
+                  Services["TweenService"]:Create(Toggle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.new(0.14,0.14,0.14)}):Play()
+                  Services["TweenService"]:Create(ToggleName, TweenInfo.new(0.3), {TextColor3 = Color3.new(1,1,1)}):Play()
+                  SendNotification(0.5, z.Name.." is now:", false)
+              end
+          end
+          
+              local function CallBack()
+                  z.Value = not z.Value
+                  ChangeColor()
+                  if z.Callback then
+                      z.Callback(z.Value)
+                  end
+                  
+                  if z.Save then
+                      local file = z.Save
+                      local data = {}
+                      if isfile(file) then
+                          pcall(function()
+                              data = Services["HttpService"]:JSONDecode(readfile(file))
+                          end)
+                      end
+                      data[z.Name] = z.Value
+                      writefile(file, Services["HttpService"]:JSONEncode(data))
+                      print("Saved settings:", z.Name, z.Value)
+                  end
+              end
+              
+              Toggle.MouseButton1Click:Connect(CallBack)
+              
+             
+              if z.Load then
+                  local file = z.Load
+                  if isfile(file) then
+                      local data = {}
+                      pcall(function()
+                          data = Services["HttpService"]:JSONDecode(readfile(file))
+                      end)
+                      if data[z.Name] ~= nil then
+                          z.Value = data[z.Name]
+                          ChangeColor()
+                          if z.Callback then
+                              z.Callback(z.Value)
+                          end
+                          print("Loaded settings:", z.Name, z.Value)
+                      end
+                  end
+              end
+          SetCorner(3, Toggle)
+          return Toggle
+       end
+    return ToggleHolder
+  end
+end
+
+  
+
+  
+  local Astronite = CreateMain({
+      ["Tittle"] = "Astronite"
+  })
+  
+  local Blatant = CreateTab({
+      ["TabName"] = "Blantant",
+      ["Icon"] = "rbxassetid://4830959433"
+  })
+
+function GetInvFolder()
+    local InvFolder
+    for _, Isk in ipairs(LocalPlayer.Character:GetChildren()) do
+        if Isk.Name == "InventoryFolder" then
+            InvFolder = Isk
+            return InvFolder.Value
+        end
+    end
+end
+
+local function IsPlayerAlive(player)
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        return player.Character.Humanoid.Health > 0
+    else
+        return false
+    end
+end
+
+function GetSword()
+    local InvFolder = GetInvFolder()
+    for _, Value in next, InvFolder:GetChildren() do
+        if Value.Name:lower():find("sword") then
+            return Value
+        end
+    end
+end
+  
+  RunAstro(function()
+    local Killaura = {Value = true, Range = 18}
+    local VisualMode = {Highlight = true, Part = true, RangeViz = false, Particles = false}
+    
+    local Highlight = Instance.new("Highlight")
+    Highlight.Enabled = true
+    
+    local part = Instance.new("Part")
+    part.Size = Vector3.new(4,6,4)
+    part.Color = Color3.fromRGB(186,190,108)
+    part.Transparency = 0.5
+    part.Anchored = true
+    part.CanCollide = false
+    
+    function Return(z)
+        return z
+    end
+    local Remote = game:GetService("ReplicatedStorage").rbxts_include.node_modules:FindFirstChild("@rbxts").net.out._NetManaged.SwordHit
+    local KillauraToggle = CreateToggle({
+        ["Parent"] = Blatant,
+        ["Name"] = "Killaura",
+        ["Save"] = "Astronite/Settings.lua",
+        ["Load"] = "Astronite/Settings.lua",
+        ["Callback"] = function(Value)
+          Killaura.Value = Value
+            if Killaura.Value then
+                spawn(function()
+                    while Killaura.Value do
+                            if IsPlayerAlive(LocalPlayer) then
+                                local HRP = LocalPlayer.Character.HumanoidRootPart
+                                local Sword = GetSword()
+                                if Sword then
+                                    for _, v in next, game.Players:GetPlayers() do
+                                        if v ~= LocalPlayer and v.Team ~= LocalPlayer.Team and v.Character and IsPlayerAlive(v) then
+                                            local ActualTarget = v
+                                            local Target = v.Character
+                                            local Calculate = (HRP.Position - Target.HumanoidRootPart.Position).magnitude
+                                            
+                                            if IsPlayerAlive(ActualTarget) and IsPlayerAlive(LocalPlayer) then
+                                                if VisualMode.Highlight then
+                                                    if Calculate < Killaura.Range then
+                                                        Highlight.Parent = Target
+                                                        Highlight.Enabled = true
+                                                    else
+                                                        Highlight.Enabled = false
+                                                    end
+                                                end
+                                                
+                                                if VisualMode.Part then
+                                                    if Calculate < Killaura.Range then
+                                                        part.Parent = Target
+                                                        part.Transparency = 0.5
+                                                    else
+                                                        part.Transparency = 1
+                                                    end
+                                                end
+                                                
+                                                CmbtConst.RAYCAST_SWORD_CHARACTER_DISTANCE = 22
+                                                
+                                                if Calculate < Killaura.Range then
+                                                    Remote:FireServer({
+                                                        entityInstance = Target,
+                                                        chargedAttack = {chargeRatio = 0},
+                                                        validate = {
+                                                            targetPosition = {value = Return(Target.HumanoidRootPart.Position)},
+                                                            selfPosition = {value = Return(HRP.Position)},
+                                                        },
+                                                        weapon = Sword,
+                                                    })
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        task.wait()
+                    end
+                end)
+            end
+        end
+    })
+end)
+
+
+local Toggle = CreateToggle({
+    ["Parent"] = Blatant,
+    ["Name"] = "Toggle",
+    ["Save"] = "Astronite/Settings.lua",
+    ["Load"] = "Astronite/Settings.lua",
+    ["Callback"] = function(Value)
+      
+    end
+  })
